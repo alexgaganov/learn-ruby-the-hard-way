@@ -7,6 +7,7 @@ Dict.set(states, 'Florida', 'FL')
 Dict.set(states, 'California', 'CA')
 Dict.set(states, 'New York', 'NY')
 Dict.set(states, 'Michigan', 'MI')
+Dict.set(states, 'Michigan', 'MIC')
 
 # create a basic set of states and some cities in them
 cities = Dict.new()
@@ -53,3 +54,11 @@ end
 # default values using ||= with the nil result
 city = Dict.get(cities, 'TX', 'Does Not Exist')
 puts "The city for the state 'TX' is: #{city}"
+
+
+puts '-' * 10
+Dict.delete_single(states, 'Michigan', 'MIC')
+Dict.list(states)
+
+#Dict.dump(states)
+#Dict.dump(cities)
