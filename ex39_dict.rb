@@ -44,12 +44,18 @@ module Dict
         def Dict.set(aDict, key, value)
                 # Sets the key  to the value, replacing any existing value.
                 bucket = Dict.get_bucket(aDict, key)
-                i, k, v = Dict.get_slot(aDict, key)
+                i, k, v_list = Dict.get_slot(aDict, key)
 
                 if i >= 0
-                        bucket[i] = [key, value]
+
+                        if !v_list.index(value)
+                                v_list.push(value)
+                                bucket[i] = [key, v_list]
+                        end
                 else
-                        bucket.push([key, value])
+                        v_list = []
+                        v_list.push(value)
+                        bucket.push([key, v_list])
                 end
         end
 
@@ -66,12 +72,35 @@ module Dict
                 end
         end
 
+        def Dict.delete_single(aDict, key, value)
+                # Deletes a particular value that corresponds to provided key
+                bucket = Dict.get_bucket(aDict, key)
+
+                (0...bucket.length).each do |i|
+                        k, v_list = bucket[i]
+                        if key == k
+                                v_list.delete(value)
+                                break
+                        end
+                end
+        end
+
+
+
         def Dict.list(aDict)
                 # Prints out what's in the Dict.
                 aDict.each do |bucket|
                         if bucket
-                                bucket.each {|k, v| puts k, v}
+                                bucket.each do |k, v_list|
+                                        puts "+#{k}"
+                                        v_list.each {|v| puts " -#{v}"}
+                                end
                         end
                 end
+        end
+
+        def Dict.dump(aDict)
+                # Dumps all the content of the Dict for debug purposes.
+                aDict.each {|bucket| puts bucket}
         end
 end
